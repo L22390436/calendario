@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Calendario UPN 231 | Ciclo 2025-2026 (Actualizado)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #eef2f7;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 20px 16px;
+            color: #1e2a3e;
+        }
+
+        .calendar-wrapper {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0b3b5f, #1b5a7a);
+            color: white;
+            padding: 1rem 1.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .header h2 {
+            font-size: 0.85rem;
+            font-weight: 400;
+            margin: 0.25rem 0 0 0;
+            opacity: 0.85;
+        }
+
+        .header p {
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            margin-top: 0.5rem;
+        }
+
+        .period-selector {
+            background: #f8fafc;
+            padding: 0.8rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .period-selector label {
+            font-weight: 600;
+            color: #0b3b5f;
+        }
+
+        .period-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .period-btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.1s;
+            color: #1e293b;
+        }
+
+        .period-btn:hover {
+            background: #e6f0fa;
+        }
+
+        .period-btn.active {
+            background: #0b3b5f;
+            border-color: #0b3b5f;
+            color: white;
+        }
+
+        .main-layout {
+            display: flex;
+            position: relative;
+        }
+
+        .calendar-container {
+            flex: 1;
+        }
+
+        .months-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 20px;
+            background: #fff;
+        }
+
+        .month-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .month-name {
+            background: #f1f5f9;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 8px 0;
+            color: #0c4a6e;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #f8fafc;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-align: center;
+            color: #334155;
+            padding: 5px 0;
+            border-bottom: 1px solid #e9edf2;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: white;
+        }
+
+        .day-cell {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 4px 2px;
+            border: 1px solid #f0f2f5;
+            background: white;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-cell:hover {
+            background: #fef7e0;
+            transform: scale(0.96);
+            z-index: 2;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .day-top-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 2px;
+            flex-wrap: nowrap;
+        }
+
+        .day-number {
+            font-weight: 600;
+            font-size: 0.75rem;
+            width: auto;
+            height: auto;
+            display: inline-block;
+            line-height: 1.2;
+        }
+
+        .period-marker {
+            font-size: 0.65rem;
+            font-weight: bold;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .event-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2px;
+        }
+
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #dc2626;
+            border-radius: 50%;
+        }
+
+        .event-count {
+            background: #eef2ff;
+            color: #1e40af;
+            border-radius: 30px;
+            padding: 0px 4px;
+            font-size: 0.55rem;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .period-highlight {
+            background-color: rgba(59,130,246,0.1);
+        }
+
+        .side-panel {
+            width: 320px;
+            background: #f9fafc;
+            border-left: 1px solid #e2e8f0;
+            padding: 1.2rem;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .side-panel h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-left: 5px solid #0f5b8c;
+            padding-left: 0.8rem;
+            margin-bottom: 1rem;
+            color: #0b3b5f;
+        }
+
+        .selected-date-side {
+            background: #e6f0fa;
+            padding: 0.4rem 0.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .activities-side {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .activities-side li {
+            background: white;
+            margin-bottom: 12px;
+            border-radius: 18px;
+            padding: 10px 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-left: 4px solid #2c7da0;
+            font-size: 0.8rem;
+        }
+
+        .activities-side li strong {
+            display: block;
+            font-size: 0.85rem;
+            color: #0f5b8c;
+            margin-bottom: 4px;
+        }
+
+        .empty-side {
+            color: #6c757d;
+            text-align: center;
+            padding: 1.2rem;
+            font-style: italic;
+            background: #ffffffd0;
+            border-radius: 24px;
+        }
+
+        .legend {
+            margin-top: 1.5rem;
+            background: #ffffffcc;
+            padding: 0.6rem 1rem;
+            border-radius: 40px;
+            font-size: 0.65rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .legend span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .legend .highlight-box {
+            width: 18px;
+            height: 10px;
+            background: rgba(59,130,246,0.3);
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        footer {
+            background: #f1f5f9;
+            text-align: center;
+            font-size: 0.65rem;
+            padding: 0.6rem;
+            color: #3a546d;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 32px;
+            padding: 1.2rem;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #5e6f8d;
+        }
+
+        @media (max-width: 1000px) {
+            .side-panel { display: none; }
+            .main-layout { display: block; }
+            .months-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 16px; }
+        }
+        @media (max-width: 550px) {
+            .months-grid { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 1001px) {
+            .calendar-container { padding-right: 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="calendar-wrapper">
+    <div class="header">
+        <h1>📅 Calendario Académico</h1>
+        <h2>Universidad Pedagógica Nacional — Unidad 231 Chetumal</h2>
+        <p>Ciclo 2025-2026 · Selecciona un periodo para resaltar su rango</p>
+    </div>
+
+    <div class="period-selector">
+        <label>🔍 Mostrar periodo:</label>
+        <div class="period-buttons" id="periodButtons">
+            <button data-period="none" class="period-btn active">Ninguno</button>
+            <button data-period="lic" class="period-btn">Licenciatura</button>
+            <button data-period="mecpd1" class="period-btn">MECPD (mar,mié,jue)</button>
+            <button data-period="mecpd2" class="period-btn">MECPD (vie,sáb)</button>
+            <button data-period="mecpd3" class="period-btn">MECPD (sáb)</button>
+            <button data-period="vacation" class="period-btn">Vacaciones Semana Santa</button>
+        </div>
+    </div>
+
+    <div class="main-layout">
+        <div class="calendar-container">
+            <div class="months-grid" id="monthsGrid"></div>
+        </div>
+        <div class="side-panel" id="sidePanel">
+            <h3>📌 Actividades del día</h3>
+            <div id="selectedDateSide" class="selected-date-side">🔍 Selecciona una fecha</div>
+            <ul class="activities-side" id="activitiesSideList">
+                <li class="empty-side">Haz clic en cualquier día del calendario.</li>
+            </ul>
+            <div class="legend">
+                <div><span style="background:#dc2626;"></span> Eventos regulares</div>
+                <div><span class="highlight-box"></span> Rango del periodo seleccionado</div>
+                <div>🟢 ▶ Inicio · 🔴 ■ Fin (pasa el mouse)</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalDateTitle">Actividades</h3>
+                <button class="close-modal" id="closeModalBtn">&times;</button>
+            </div>
+            <ul id="modalActivitiesList" class="modal-activities" style="list-style:none; padding:0;"></ul>
+        </div>
+    </div>
+    <footer>📌 Calendario actualizado con las correcciones solicitadas (pago de examen, inscripciones, ceremonias por sede, festival, etc.)</footer>
+</div>
+
+<script>
+    // ======================== PERIODOS (resaltables) ========================
+    const periods = {
+        lic: {
+            name: "Licenciatura",
+            start: new Date(2026, 1, 9),
+            end: new Date(2026, 5, 12),
+            startMsg: "🎓 Inicio Licenciatura",
+            endMsg: "🏁 Fin Licenciatura",
+            color: "#d9eef7"
+        },
+        mecpd1: {
+            name: "MECPD (mar,mié,jue)",
+            start: new Date(2026, 1, 10),
+            end: new Date(2026, 5, 11),
+            startMsg: "📖 Inicio MECPD (mar-mié-jue)",
+            endMsg: "🏁 Fin MECPD (mar-mié-jue)",
+            color: "#e0f2fe"
+        },
+        mecpd2: {
+            name: "MECPD (vie,sáb)",
+            start: new Date(2026, 1, 13),
+            end: new Date(2026, 5, 13),
+            startMsg: "📖 Inicio MECPD (vie-sáb)",
+            endMsg: "🏁 Fin MECPD (vie-sáb)",
+            color: "#fef9c3"
+        },
+        mecpd3: {
+            name: "MECPD (sáb)",
+            start: new Date(2026, 1, 14),
+            end: new Date(2026, 5, 13),
+            startMsg: "📖 Inicio MECPD (sáb)",
+            endMsg: "🏁 Fin MECPD (sáb)",
+            color: "#ffe4e6"
+        },
+        vacation: {
+            name: "Vacaciones Semana Santa",
+            start: new Date(2026, 2, 30),
+            end: new Date(2026, 3, 10),
+            startMsg: "🌴 Inicio Vacaciones",
+            endMsg: "🌴 Fin Vacaciones",
+            color: "#ffedd5"
+        }
+    };
+
+    // ======================== EVENTOS REGULARES (actualizados) ========================
+    const eventsData = [];
+
+    function addEventRange(title, startDayMonth, endDayMonth, descriptionOverride = null) {
+        const monthsMap = {'ene':0,'feb':1,'mar':2,'abr':3,'may':4,'jun':5,'jul':6,'ago':7,'sep':8,'oct':9,'nov':10,'dic':11};
+        const parse = (str) => {
+            let [day, mon] = str.trim().split(' ');
+            return new Date(2026, monthsMap[mon.toLowerCase()], parseInt(day));
+        };
+        const start = parse(startDayMonth);
+        const end = parse(endDayMonth);
+        eventsData.push({ title, start, end, description: descriptionOverride || title });
+    }
+    function addSingle(title, dateStr, desc = null) { addEventRange(title, dateStr, dateStr, desc); }
+
+    // ---- ENERO ----
+    addSingle("📄 Entrega de Actas de Evaluación Ordinaria", "12 ene");
+    addEventRange("📋 Solicitudes de examen de regularización Lic. 1ª Op.", "14 ene", "15 ene");
+    addSingle("✍️ Aplicación de examen de regularización Lic. 1ª Op.", "16 ene");
+    addEventRange("🎓 Registro de egresados para asesoría y seminario de titulación", "19 ene", "23 ene");
+    addEventRange("🔄 Reinscripción de estudiantes regulares y regularizados", "19 ene", "23 ene");
+    addEventRange("👩‍🏫 Actualización y habilitación docente", "19 ene", "23 ene");
+    addSingle("📊 Entrega de calificaciones — examen regularización Lic. 1ª Op.", "20 ene");
+    addEventRange("📐 Diseño de Plan de Acción Docente próximo semestre", "26 ene", "30 ene");
+    addEventRange("📑 Solicitud de examen de regularización licenciatura 2ª Oportunidad", "29 ene", "30 ene");
+
+    // ---- FEBRERO (se eliminó el diseño de regularización) ----
+    addSingle("✍️ Aplicación de examen de regularización Lic. 2ª Op.", "3 feb");
+    addSingle("✅ Entrega de calificaciones — examen regularización Lic. 2ª Op.", "6 feb");
+    addEventRange("📌 Reinscripción de estudiantes regularizados de Licenciatura", "9 feb", "10 feb");
+    addSingle("📋 Entrega de listas definitivas a docentes", "10 feb");
+
+    // ---- MARZO ----
+    addEventRange("📢 Publicación de convocatoria nuevo ingreso (Lic. y Maestría)", "2 mar", "13 mar");
+    addEventRange("📢 Publicación de convocatoria EGC de LPE", "2 mar", "13 mar");
+    addEventRange("📝 Inicio de registro de aspirantes a Maestría", "9 mar", "12 jun");
+    addSingle("📄 Entrega de documentos de acreditación al DRyC", "16 mar");
+    addEventRange("📝 Inicio de registro de aspirantes a Licenciatura", "16 mar", "12 jun");
+
+    // ---- ABRIL ----
+    addSingle("🎉 Festival del día del niño, niña y el estudiante", "29 abr");
+
+    // ---- MAYO ----
+    addSingle("📑 Entrega de actas de evaluación ordinaria de docentes", "29 may");
+
+    // ---- JUNIO ----
+    addSingle("🏁 Fin de actividades MECPD (mar, mié, jue)", "11 jun");
+    addSingle("🏁 Fin de actividades Licenciatura", "12 jun");
+    addSingle("🔚 Fin de registro de aspirantes", "12 jun");
+    addSingle("💵 Pago de derecho examen maestría nuevo ingreso", "12 jun");
+    addSingle("🏁 Fin de actividades MECPD (vie, sáb)", "13 jun");
+    addEventRange("🎤 Entrevista de aspirantes — Licenciatura", "15 jun", "19 jun");
+    addEventRange("🎤 Entrevista de aspirantes — Maestría", "15 jun", "26 jun");
+    addSingle("📝 Examen de nuevo ingreso Licenciatura", "20 jun");
+    addSingle("📋 Publicación de lista de aspirantes aceptados", "20 jun");
+    addSingle("📄 Entrega de actas de evaluación ordinaria (2da entrega)", "22 jun");
+    addEventRange("📋 Solicitudes de examen regularización Lic. 1ª Op. (junio)", "25 jun", "26 jun");
+    addSingle("✍️ Aplicación examen regularización Lic. 1ª Op. (junio)", "26 jun");
+    addSingle("📬 Entrega de boletas Chetumal", "30 jun");
+    // NOTA: se eliminó "Entrega de calificaciones — examen regularización Lic. 1ª Op." del 30 de junio
+
+    // ---- JULIO (ceremonias reemplazadas por eventos individuales) ----
+    addEventRange("✍️ Aplicación de examen de regularización — 1ª Oportunidad", "2 jul", "3 jul");
+    addSingle("📢 Resultados de nuevo ingreso Lic. y Maestría", "6 jul");
+    // Nuevas ceremonias de egreso:
+    addSingle("🎓 Ceremonia de egreso - Cancún", "1 jul");
+    addSingle("🎓 Ceremonia de egreso - Playa del Carmen", "2 jul");
+    addSingle("🎓 Ceremonia de egreso - Felipe Carrillo Puerto", "3 jul");
+    addSingle("🎓 Ceremonia de egreso - Chetumal", "6 jul");
+    addSingle("📬 Entrega de boletas subsedes", "7 jul");
+    addSingle("📊 Entrega de resultados — examen regularización 1ª Op.", "9 jul");
+    addEventRange("☀️ Inicio Período vacacional de verano", "13 jul", "7 ago");
+    addEventRange("🎓 Realización de exámenes profesionales", "13 jul", "24 jul");
+    // Se eliminó la aplicación del 26 de julio (no existía)
+
+    // ---- AGOSTO ----
+    addSingle("☀️ Fin Período vacacional de verano", "7 ago");
+    // Inscripción nuevo ingreso ahora es del 10 al 14 de agosto
+    addEventRange("📝 Inscripción nuevo ingreso (Lic. y Maestría)", "10 ago", "14 ago");
+    addSingle("📅 Regreso del personal y unidad docente", "10 ago");
+    addSingle("📌 Inscripción 3er semestre LIE y LPE", "11 ago");
+    addSingle("📌 Inscripción 5to semestre de LIE y LPE", "12 ago");
+    addSingle("📌 Inscripción 7mo semestre de LIE y LPE (alumnos regulares)", "13 ago");
+    addEventRange("📋 Solicitud de examen de regularización — 2ª Oportunidad", "11 ago", "12 ago");
+    addSingle("✍️ Aplicación de examen de regularización — 2ª Oportunidad", "18 ago");
+    addEventRange("📖 Curso propedéutico Licenciatura", "17 ago", "21 ago");
+    addEventRange("📖 Curso propedéutico Maestría", "21 ago", "22 ago");
+    addSingle("📊 Entrega de resultados — examen regularización 2ª Op.", "21 ago");
+    addSingle("🎓 Inicio del ciclo escolar — Licenciatura", "24 ago");
+    addSingle("🔄 Inscripción alumnos regularizados — Licenciatura", "25 ago");
+    addSingle("🎓 Inicio del ciclo escolar — Maestría", "26 ago");
+    addSingle("🎓 Inicio del ciclo escolar — Maestría nuevo ingreso", "28 ago");
+    // Actualización del 14 de agosto con texto "(alumnos extemporáneos)"
+    addSingle("📌 Inscripción Maestría, extemporáneos y asesoría de titulación (alumnos extemporáneos)", "14 ago");
+
+    // ---- DICIEMBRE ----
+    addSingle("🏁 Fin del ciclo escolar — Licenciatura", "18 dic");
+    addSingle("🏁 Fin del ciclo escolar — Maestría", "19 dic");
+
+    // ---- NOTA: Se eliminaron todos los eventos que contenían "Diseño, Aplicación y Evaluación" (tanto 1ª como 2ª oportunidad) ----
+
+    // Indexar eventos regulares por día
+    const dayEventMap = new Map();
+    function formatYMD(date) {
+        return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    }
+    eventsData.forEach(ev => {
+        let cur = new Date(ev.start);
+        const end = new Date(ev.end);
+        while (cur <= end) {
+            const key = formatYMD(cur);
+            if (!dayEventMap.has(key)) dayEventMap.set(key, []);
+            dayEventMap.get(key).push({ title: ev.title, description: ev.description });
+            cur.setDate(cur.getDate() + 1);
+        }
+    });
+
+    // ======================== RENDER DEL CALENDARIO ========================
+    const monthNames = ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
+    const weekDays = ["L","M","M","J","V","S","D"];
+
+    let currentPeriodId = "none";
+
+    function renderCalendar() {
+        const container = document.getElementById("monthsGrid");
+        container.innerHTML = "";
+        const year = 2026;
+
+        for (let month = 0; month < 12; month++) {
+            const firstDay = new Date(year, month, 1);
+            let startWeekday = firstDay.getDay();
+            let offset = (startWeekday === 0 ? 6 : startWeekday - 1);
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            const monthCard = document.createElement("div");
+            monthCard.className = "month-card";
+            const monthTitle = document.createElement("div");
+            monthTitle.className = "month-name";
+            monthTitle.innerText = monthNames[month];
+            monthCard.appendChild(monthTitle);
+
+            const weekRow = document.createElement("div");
+            weekRow.className = "weekdays";
+            weekDays.forEach(d => { const s = document.createElement("span"); s.innerText = d; weekRow.appendChild(s); });
+            monthCard.appendChild(weekRow);
+
+            const daysGrid = document.createElement("div");
+            daysGrid.className = "calendar-days";
+
+            for (let i = 0; i < offset; i++) {
+                const empty = document.createElement("div");
+                empty.className = "day-cell";
+                empty.style.opacity = "0.3";
+                empty.style.cursor = "default";
+                daysGrid.appendChild(empty);
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateObj = new Date(year, month, d);
+                const ymdKey = formatYMD(dateObj);
+                const regularEvents = dayEventMap.get(ymdKey) || [];
+                const hasEvents = regularEvents.length > 0;
+
+                let isInPeriod = false;
+                let isStart = false, isEnd = false;
+                let periodMsgStart = "", periodMsgEnd = "";
+                if (currentPeriodId !== "none" && periods[currentPeriodId]) {
+                    const p = periods[currentPeriodId];
+                    const startDate = p.start;
+                    const endDate = p.end;
+                    const curDate = new Date(dateObj);
+                    if (curDate >= startDate && curDate <= endDate) isInPeriod = true;
+                    if (curDate.getTime() === startDate.getTime()) { isStart = true; periodMsgStart = p.startMsg; }
+                    if (curDate.getTime() === endDate.getTime()) { isEnd = true; periodMsgEnd = p.endMsg; }
+                }
+
+                const cell = document.createElement("div");
+                cell.className = "day-cell";
+                if (isInPeriod) {
+                    cell.classList.add("period-highlight");
+                    cell.style.backgroundColor = periods[currentPeriodId]?.color || "#f0f9ff";
+                }
+
+                const topRow = document.createElement("div");
+                topRow.className = "day-top-row";
+                const dayNumSpan = document.createElement("span");
+                dayNumSpan.className = "day-number";
+                dayNumSpan.innerText = d;
+                topRow.appendChild(dayNumSpan);
+
+                if (isStart || isEnd) {
+                    const markerSpan = document.createElement("span");
+                    markerSpan.className = "period-marker";
+                    markerSpan.innerText = isStart ? "▶" : "■";
+                    markerSpan.title = isStart ? periodMsgStart : periodMsgEnd;
+                    if (isStart) markerSpan.style.color = "#15803d";
+                    else markerSpan.style.color = "#b91c1c";
+                    topRow.appendChild(markerSpan);
+                }
+                cell.appendChild(topRow);
+
+                if (hasEvents) {
+                    const ind = document.createElement("div");
+                    ind.className = "event-indicator";
+                    if (regularEvents.length === 1) {
+                        const dot = document.createElement("span");
+                        dot.className = "event-dot";
+                        ind.appendChild(dot);
+                    } else {
+                        const badge = document.createElement("span");
+                        badge.className = "event-count";
+                        badge.innerText = regularEvents.length;
+                        ind.appendChild(badge);
+                    }
+                    cell.appendChild(ind);
+                }
+
+                cell.addEventListener("click", (function(evts, dayNum, monthIdx, startFlag, endFlag, startTxt, endTxt) {
+                    return function() {
+                        const displayDate = `${dayNum} de ${monthNames[monthIdx]} de 2026`;
+                        const isDesktop = window.innerWidth >= 1001;
+                        let allActivities = [...evts];
+                        if (startFlag) allActivities.unshift({ title: startTxt, description: startTxt });
+                        if (endFlag) allActivities.unshift({ title: endTxt, description: endTxt });
+
+                        if (isDesktop) {
+                            document.getElementById("selectedDateSide").innerHTML = `📅 ${displayDate}`;
+                            const sideList = document.getElementById("activitiesSideList");
+                            if (!allActivities.length) {
+                                sideList.innerHTML = `<li class="empty-side">✨ No hay actividades programadas para este día.</li>`;
+                            } else {
+                                let html = '';
+                                allActivities.forEach(e => {
+                                    html += `<li><strong>📌 ${e.title}</strong><br><span style="font-size:0.75rem;">${e.description}</span></li>`;
+                                });
+                                sideList.innerHTML = html;
+                            }
+                        } else {
+                            document.getElementById("modalDateTitle").innerHTML = `📅 ${displayDate}`;
+                            const modalList = document.getElementById("modalActivitiesList");
+                            if (!allActivities.length) {
+                                modalList.innerHTML = `<li class="empty-side" style="list-style:none;">✨ No hay actividades.</li>`;
+                            } else {
+                                let html = '';
+                                allActivities.forEach(e => {
+                                    html += `<li style="background:#f8fafc; margin-bottom:8px; padding:8px; border-radius:16px;"><strong>📌 ${e.title}</strong><br><span style="font-size:0.75rem;">${e.description}</span></li>`;
+                                });
+                                modalList.innerHTML = html;
+                            }
+                            document.getElementById("modal").style.display = "flex";
+                        }
+                    };
+                })(regularEvents, d, month, isStart, isEnd, periodMsgStart, periodMsgEnd));
+
+                daysGrid.appendChild(cell);
+            }
+
+            const total = daysGrid.children.length;
+            for (let i = total; i < 42; i++) {
+                const empty = document.createElement("div");
+                empty.className = "day-cell";
+                empty.style.opacity = "0.2";
+                empty.style.cursor = "default";
+                daysGrid.appendChild(empty);
+            }
+            monthCard.appendChild(daysGrid);
+            container.appendChild(monthCard);
+        }
+    }
+
+    function setActivePeriod(periodId) {
+        currentPeriodId = periodId;
+        renderCalendar();
+        document.querySelectorAll(".period-btn").forEach(btn => {
+            if (btn.getAttribute("data-period") === periodId) {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
+            }
+        });
+    }
+
+    document.querySelectorAll(".period-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const period = btn.getAttribute("data-period");
+            setActivePeriod(period);
+        });
+    });
+
+    renderCalendar();
+
+    const modal = document.getElementById("modal");
+    const closeBtn = document.getElementById("closeModalBtn");
+    closeBtn.onclick = () => modal.style.display = "none";
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+</script>
+</body>
+</html>
