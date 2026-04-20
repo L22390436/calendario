@@ -382,13 +382,13 @@
 <body>
 <div class="calendar-wrapper">
     <div class="header">
-        <h1>📅 Calendario Académico</h1>
+        <h1>Calendario Académico</h1>
         <h2>Universidad Pedagógica Nacional — Unidad 231 Chetumal</h2>
         <p>Ciclo 2025-2026 · Selecciona un periodo para resaltar su rango</p>
     </div>
 
     <div class="period-selector">
-        <label>🔍 Mostrar periodo:</label>
+        <label>Mostrar periodo:</label>
         <div class="period-buttons" id="periodButtons">
             <button data-period="none" class="period-btn active">Ninguno</button>
             <button data-period="lic" class="period-btn">Licenciatura</button>
@@ -404,15 +404,15 @@
             <div class="months-grid" id="monthsGrid"></div>
         </div>
         <div class="side-panel" id="sidePanel">
-            <h3>📌 Actividades del día</h3>
-            <div id="selectedDateSide" class="selected-date-side">🔍 Selecciona una fecha</div>
+            <h3>Actividades del día</h3>
+            <div id="selectedDateSide" class="selected-date-side">Selecciona una fecha</div>
             <ul class="activities-side" id="activitiesSideList">
                 <li class="empty-side">Haz clic en cualquier día del calendario.</li>
             </ul>
             <div class="legend">
                 <div><span style="background:#dc2626;"></span> Eventos regulares</div>
                 <div><span class="highlight-box"></span> Rango del periodo seleccionado</div>
-                <div>🟢 ▶ Inicio · 🔴 ■ Fin (pasa el mouse)</div>
+                <div>Inicio · Fin (pasa el mouse)</div>
             </div>
         </div>
     </div>
@@ -426,55 +426,53 @@
             <ul id="modalActivitiesList" class="modal-activities" style="list-style:none; padding:0;"></ul>
         </div>
     </div>
-    <footer></footer>
+    <footer>Calendario actualizado con las correcciones solicitadas</footer>
 </div>
 
 <script>
-    // ======================== PERIODOS (resaltables) ========================
     const periods = {
         lic: {
             name: "Licenciatura",
             start: new Date(2026, 1, 9),
             end: new Date(2026, 5, 12),
-            startMsg: "🎓 Inicio Licenciatura",
-            endMsg: "🏁 Fin Licenciatura",
+            startMsg: "Inicio Licenciatura",
+            endMsg: "Fin Licenciatura",
             color: "#d9eef7"
         },
         mecpd1: {
             name: "MECPD (mar,mié,jue)",
             start: new Date(2026, 1, 10),
             end: new Date(2026, 5, 11),
-            startMsg: "📖 Inicio MECPD (mar-mié-jue)",
-            endMsg: "🏁 Fin MECPD (mar-mié-jue)",
+            startMsg: "Inicio MECPD (mar-mié-jue)",
+            endMsg: "Fin MECPD (mar-mié-jue)",
             color: "#e0f2fe"
         },
         mecpd2: {
             name: "MECPD (vie,sáb)",
             start: new Date(2026, 1, 13),
             end: new Date(2026, 5, 13),
-            startMsg: "📖 Inicio MECPD (vie-sáb)",
-            endMsg: "🏁 Fin MECPD (vie-sáb)",
+            startMsg: "Inicio MECPD (vie-sáb)",
+            endMsg: "Fin MECPD (vie-sáb)",
             color: "#fef9c3"
         },
         mecpd3: {
             name: "MECPD (sáb)",
             start: new Date(2026, 1, 14),
             end: new Date(2026, 5, 13),
-            startMsg: "📖 Inicio MECPD (sáb)",
-            endMsg: "🏁 Fin MECPD (sáb)",
+            startMsg: "Inicio MECPD (sáb)",
+            endMsg: "Fin MECPD (sáb)",
             color: "#ffe4e6"
         },
         vacation: {
             name: "Vacaciones Semana Santa",
             start: new Date(2026, 2, 30),
             end: new Date(2026, 3, 10),
-            startMsg: "🌴 Inicio Vacaciones",
-            endMsg: "🌴 Fin Vacaciones",
+            startMsg: "Inicio Vacaciones",
+            endMsg: "Fin Vacaciones",
             color: "#ffedd5"
         }
     };
 
-    // ======================== EVENTOS REGULARES (actualizados) ========================
     const eventsData = [];
 
     function addEventRange(title, startDayMonth, endDayMonth, descriptionOverride = null) {
@@ -489,93 +487,76 @@
     }
     function addSingle(title, dateStr, desc = null) { addEventRange(title, dateStr, dateStr, desc); }
 
-    // ---- ENERO ----
-    addSingle("📄 Entrega de Actas de Evaluación Ordinaria", "12 ene");
-    addEventRange("📋 Solicitudes de examen de regularización Lic. 1ª Op.", "14 ene", "15 ene");
-    addSingle("✍️ Aplicación de examen de regularización Lic. 1ª Op.", "16 ene");
-    addEventRange("🎓 Registro de egresados para asesoría y seminario de titulación", "19 ene", "23 ene");
-    addEventRange("🔄 Reinscripción de estudiantes regulares y regularizados", "19 ene", "23 ene");
-    addEventRange("👩‍🏫 Actualización y habilitación docente", "19 ene", "23 ene");
-    addSingle("📊 Entrega de calificaciones — examen regularización Lic. 1ª Op.", "20 ene");
-    addEventRange("📐 Diseño de Plan de Acción Docente próximo semestre", "26 ene", "30 ene");
-    addEventRange("📑 Solicitud de examen de regularización licenciatura 2ª Oportunidad", "29 ene", "30 ene");
+    addSingle("Entrega de Actas de Evaluación Ordinaria", "12 ene");
+    addEventRange("Solicitudes de examen de regularización Lic. 1ª Op.", "14 ene", "15 ene");
+    addSingle("Aplicación de examen de regularización Lic. 1ª Op.", "16 ene");
+    addEventRange("Registro de egresados para asesoría y seminario de titulación", "19 ene", "23 ene");
+    addEventRange("Reinscripción de estudiantes regulares y regularizados", "19 ene", "23 ene");
+    addEventRange("Actualización y habilitación docente", "19 ene", "23 ene");
+    addSingle("Entrega de calificaciones — examen regularización Lic. 1ª Op.", "20 ene");
+    addEventRange("Diseño de Plan de Acción Docente próximo semestre", "26 ene", "30 ene");
+    addEventRange("Solicitud de examen de regularización licenciatura 2ª Oportunidad", "29 ene", "30 ene");
 
-    // ---- FEBRERO (se eliminó el diseño de regularización) ----
-    addSingle("✍️ Aplicación de examen de regularización Lic. 2ª Op.", "3 feb");
-    addSingle("✅ Entrega de calificaciones — examen regularización Lic. 2ª Op.", "6 feb");
-    addEventRange("📌 Reinscripción de estudiantes regularizados de Licenciatura", "9 feb", "10 feb");
-    addSingle("📋 Entrega de listas definitivas a docentes", "10 feb");
+    addSingle("Aplicación de examen de regularización Lic. 2ª Op.", "3 feb");
+    addSingle("Entrega de calificaciones — examen regularización Lic. 2ª Op.", "6 feb");
+    addEventRange("Reinscripción de estudiantes regularizados de Licenciatura", "9 feb", "10 feb");
+    addSingle("Entrega de listas definitivas a docentes", "10 feb");
 
-    // ---- MARZO ----
-    addEventRange("📢 Publicación de convocatoria nuevo ingreso (Lic. y Maestría)", "2 mar", "13 mar");
-    addEventRange("📢 Publicación de convocatoria EGC de LPE", "2 mar", "13 mar");
-    addEventRange("📝 Inicio de registro de aspirantes a Maestría", "9 mar", "12 jun");
-    addSingle("📄 Entrega de documentos de acreditación al DRyC", "16 mar");
-    addEventRange("📝 Inicio de registro de aspirantes a Licenciatura", "16 mar", "12 jun");
+    addEventRange("Publicación de convocatoria nuevo ingreso (Lic. y Maestría)", "2 mar", "13 mar");
+    addEventRange("Publicación de convocatoria EGC de LPE", "2 mar", "13 mar");
+    addEventRange("Inicio de registro de aspirantes a Maestría", "9 mar", "12 jun");
+    addSingle("Entrega de documentos de acreditación al DRyC", "16 mar");
+    addEventRange("Inicio de registro de aspirantes a Licenciatura", "16 mar", "12 jun");
 
-    // ---- ABRIL ----
-    addSingle("🎉 Festival del día del niño, niña y el estudiante", "29 abr");
+    addSingle("Festival del día del niño, niña y el estudiante", "29 abr");
 
-    // ---- MAYO ----
-    addSingle("📑 Entrega de actas de evaluación ordinaria de docentes", "29 may");
+    addSingle("Entrega de actas de evaluación ordinaria de docentes", "29 may");
 
-    // ---- JUNIO ----
-    addSingle("🏁 Fin de actividades MECPD (mar, mié, jue)", "11 jun");
-    addSingle("🏁 Fin de actividades Licenciatura", "12 jun");
-    addSingle("🔚 Fin de registro de aspirantes", "12 jun");
-    addSingle("💵 Pago de derecho examen maestría nuevo ingreso", "12 jun");
-    addSingle("🏁 Fin de actividades MECPD (vie, sáb)", "13 jun");
-    addEventRange("🎤 Entrevista de aspirantes — Licenciatura", "15 jun", "19 jun");
-    addEventRange("🎤 Entrevista de aspirantes — Maestría", "15 jun", "26 jun");
-    addSingle("📝 Examen de nuevo ingreso Licenciatura", "20 jun");
-    addSingle("📋 Publicación de lista de aspirantes aceptados", "20 jun");
-    addSingle("📄 Entrega de actas de evaluación ordinaria (2da entrega)", "22 jun");
-    addEventRange("📋 Solicitudes de examen regularización Lic. 1ª Op. (junio)", "25 jun", "26 jun");
-    addSingle("✍️ Aplicación examen regularización Lic. 1ª Op. (junio)", "26 jun");
-    addSingle("📬 Entrega de boletas Chetumal", "30 jun");
-    // NOTA: se eliminó "Entrega de calificaciones — examen regularización Lic. 1ª Op." del 30 de junio
+    addSingle("Fin de actividades MECPD (mar, mié, jue)", "11 jun");
+    addSingle("Fin de actividades Licenciatura", "12 jun");
+    addSingle("Fin de registro de aspirantes", "12 jun");
+    addSingle("Pago de derecho examen maestría nuevo ingreso", "12 jun");
+    addSingle("Fin de actividades MECPD (vie, sáb)", "13 jun");
+    addEventRange("Entrevista de aspirantes — Licenciatura", "15 jun", "19 jun");
+    addEventRange("Entrevista de aspirantes — Maestría", "15 jun", "26 jun");
+    addSingle("Examen de nuevo ingreso Licenciatura", "20 jun");
+    addSingle("Publicación de lista de aspirantes aceptados", "20 jun");
+    addSingle("Entrega de actas de evaluación ordinaria (2da entrega)", "22 jun");
+    addEventRange("Solicitudes de examen regularización Lic. 1ª Op. (junio)", "25 jun", "26 jun");
+    addSingle("Aplicación examen regularización Lic. 1ª Op. (junio)", "26 jun");
+    addSingle("Entrega de boletas Chetumal", "30 jun");
 
-    // ---- JULIO (ceremonias reemplazadas por eventos individuales) ----
-    addEventRange("✍️ Aplicación de examen de regularización — 1ª Oportunidad", "2 jul", "3 jul");
-    addSingle("📢 Resultados de nuevo ingreso Lic. y Maestría", "6 jul");
-    // Nuevas ceremonias de egreso:
-    addSingle("🎓 Ceremonia de egreso - Cancún", "1 jul");
-    addSingle("🎓 Ceremonia de egreso - Playa del Carmen", "2 jul");
-    addSingle("🎓 Ceremonia de egreso - Felipe Carrillo Puerto", "3 jul");
-    addSingle("🎓 Ceremonia de egreso - Chetumal", "6 jul");
-    addSingle("📬 Entrega de boletas subsedes", "7 jul");
-    addSingle("📊 Entrega de resultados — examen regularización 1ª Op.", "9 jul");
-    addEventRange("☀️ Inicio Período vacacional de verano", "13 jul", "7 ago");
-    addEventRange("🎓 Realización de exámenes profesionales", "13 jul", "24 jul");
-    // Se eliminó la aplicación del 26 de julio (no existía)
+    addEventRange("Aplicación de examen de regularización — 1ª Oportunidad", "2 jul", "3 jul");
+    addSingle("Resultados de nuevo ingreso Lic. y Maestría", "6 jul");
+    addSingle("Ceremonia de egreso - Cancún", "1 jul");
+    addSingle("Ceremonia de egreso - Playa del Carmen", "2 jul");
+    addSingle("Ceremonia de egreso - Felipe Carrillo Puerto", "3 jul");
+    addSingle("Ceremonia de egreso - Chetumal", "6 jul");
+    addSingle("Entrega de boletas subsedes", "7 jul");
+    addSingle("Entrega de resultados — examen regularización 1ª Op.", "9 jul");
+    addEventRange("Inicio Período vacacional de verano", "13 jul", "7 ago");
+    addEventRange("Realización de exámenes profesionales", "13 jul", "24 jul");
 
-    // ---- AGOSTO ----
-    addSingle("☀️ Fin Período vacacional de verano", "7 ago");
-    // Inscripción nuevo ingreso ahora es del 10 al 14 de agosto
-    addEventRange("📝 Inscripción nuevo ingreso (Lic. y Maestría)", "10 ago", "14 ago");
-    addSingle("📅 Regreso del personal y unidad docente", "10 ago");
-    addSingle("📌 Inscripción 3er semestre LIE y LPE", "11 ago");
-    addSingle("📌 Inscripción 5to semestre de LIE y LPE", "12 ago");
-    addSingle("📌 Inscripción 7mo semestre de LIE y LPE (alumnos regulares)", "13 ago");
-    addEventRange("📋 Solicitud de examen de regularización — 2ª Oportunidad", "11 ago", "12 ago");
-    addSingle("✍️ Aplicación de examen de regularización — 2ª Oportunidad", "18 ago");
-    addEventRange("📖 Curso propedéutico Licenciatura", "17 ago", "21 ago");
-    addEventRange("📖 Curso propedéutico Maestría", "21 ago", "22 ago");
-    addSingle("📊 Entrega de resultados — examen regularización 2ª Op.", "21 ago");
-    addSingle("🎓 Inicio del ciclo escolar — Licenciatura", "24 ago");
-    addSingle("🔄 Inscripción alumnos regularizados — Licenciatura", "25 ago");
-    addSingle("🎓 Inicio del ciclo escolar — Maestría", "26 ago");
-    addSingle("🎓 Inicio del ciclo escolar — Maestría nuevo ingreso", "28 ago");
-    // Actualización del 14 de agosto con texto "(alumnos extemporáneos)"
-    addSingle("📌 Inscripción Maestría, extemporáneos y asesoría de titulación (alumnos extemporáneos)", "14 ago");
+    addSingle("Fin Período vacacional de verano", "7 ago");
+    addEventRange("Inscripción nuevo ingreso (Lic. y Maestría)", "10 ago", "14 ago");
+    addSingle("Regreso del personal y unidad docente", "10 ago");
+    addSingle("Inscripción 3er semestre LIE y LPE", "11 ago");
+    addSingle("Inscripción 5to semestre de LIE y LPE", "12 ago");
+    addSingle("Inscripción 7mo semestre de LIE y LPE (alumnos regulares)", "13 ago");
+    addEventRange("Solicitud de examen de regularización — 2ª Oportunidad", "11 ago", "12 ago");
+    addSingle("Aplicación de examen de regularización — 2ª Oportunidad", "18 ago");
+    addEventRange("Curso propedéutico Licenciatura", "17 ago", "21 ago");
+    addEventRange("Curso propedéutico Maestría", "21 ago", "22 ago");
+    addSingle("Entrega de resultados — examen regularización 2ª Op.", "21 ago");
+    addSingle("Inicio del ciclo escolar — Licenciatura", "24 ago");
+    addSingle("Inscripción alumnos regularizados — Licenciatura", "25 ago");
+    addSingle("Inicio del ciclo escolar — Maestría", "26 ago");
+    addSingle("Inicio del ciclo escolar — Maestría nuevo ingreso", "28 ago");
+    addSingle("Inscripción Maestría, extemporáneos y asesoría de titulación (alumnos extemporáneos)", "14 ago");
 
-    // ---- DICIEMBRE ----
-    addSingle("🏁 Fin del ciclo escolar — Licenciatura", "18 dic");
-    addSingle("🏁 Fin del ciclo escolar — Maestría", "19 dic");
+    addSingle("Fin del ciclo escolar — Licenciatura", "18 dic");
+    addSingle("Fin del ciclo escolar — Maestría", "19 dic");
 
-    // ---- NOTA: Se eliminaron todos los eventos que contenían "Diseño, Aplicación y Evaluación" (tanto 1ª como 2ª oportunidad) ----
-
-    // Indexar eventos regulares por día
     const dayEventMap = new Map();
     function formatYMD(date) {
         return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
@@ -591,7 +572,6 @@
         }
     });
 
-    // ======================== RENDER DEL CALENDARIO ========================
     const monthNames = ["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"];
     const weekDays = ["L","M","M","J","V","S","D"];
 
@@ -700,26 +680,26 @@
                         if (endFlag) allActivities.unshift({ title: endTxt, description: endTxt });
 
                         if (isDesktop) {
-                            document.getElementById("selectedDateSide").innerHTML = `📅 ${displayDate}`;
+                            document.getElementById("selectedDateSide").innerHTML = `Fecha: ${displayDate}`;
                             const sideList = document.getElementById("activitiesSideList");
                             if (!allActivities.length) {
-                                sideList.innerHTML = `<li class="empty-side">✨ No hay actividades programadas para este día.</li>`;
+                                sideList.innerHTML = `<li class="empty-side">No hay actividades programadas para este día.</li>`;
                             } else {
                                 let html = '';
                                 allActivities.forEach(e => {
-                                    html += `<li><strong>📌 ${e.title}</strong><br><span style="font-size:0.75rem;">${e.description}</span></li>`;
+                                    html += `<li><strong>Actividad: ${e.title}</strong><br><span style="font-size:0.75rem;">${e.description}</span></li>`;
                                 });
                                 sideList.innerHTML = html;
                             }
                         } else {
-                            document.getElementById("modalDateTitle").innerHTML = `📅 ${displayDate}`;
+                            document.getElementById("modalDateTitle").innerHTML = `Fecha: ${displayDate}`;
                             const modalList = document.getElementById("modalActivitiesList");
                             if (!allActivities.length) {
-                                modalList.innerHTML = `<li class="empty-side" style="list-style:none;">✨ No hay actividades.</li>`;
+                                modalList.innerHTML = `<li class="empty-side" style="list-style:none;">No hay actividades.</li>`;
                             } else {
                                 let html = '';
                                 allActivities.forEach(e => {
-                                    html += `<li style="background:#f8fafc; margin-bottom:8px; padding:8px; border-radius:16px;"><strong>📌 ${e.title}</strong><br><span style="font-size:0.75rem;">${e.description}</span></li>`;
+                                    html += `<li style="background:#f8fafc; margin-bottom:8px; padding:8px; border-radius:16px;"><strong>Actividad: ${e.title}</strong><br><span style="font-size:0.75rem;">${e.description}</span></li>`;
                                 });
                                 modalList.innerHTML = html;
                             }
