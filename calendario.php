@@ -426,7 +426,7 @@
             <ul id="modalActivitiesList" class="modal-activities" style="list-style:none; padding:0;"></ul>
         </div>
     </div>
-    <footer>Calendario actualizado con las correcciones solicitadas</footer>
+    <footer></footer>
 </div>
 
 <script>
@@ -674,13 +674,16 @@
                 cell.addEventListener("click", (function(evts, dayNum, monthIdx, startFlag, endFlag, startTxt, endTxt) {
                     return function() {
                         const displayDate = `${dayNum} de ${monthNames[monthIdx]} de 2026`;
+                        const dateForDayName = new Date(2026, monthIdx, dayNum);
+                        const dayName = dateForDayName.toLocaleDateString('es-ES', { weekday: 'long' });
+                        const displayDateWithDay = `${dayName.charAt(0).toUpperCase() + dayName.slice(1)}, ${displayDate}`;
                         const isDesktop = window.innerWidth >= 1001;
                         let allActivities = [...evts];
                         if (startFlag) allActivities.unshift({ title: startTxt, description: startTxt });
                         if (endFlag) allActivities.unshift({ title: endTxt, description: endTxt });
 
                         if (isDesktop) {
-                            document.getElementById("selectedDateSide").innerHTML = `Fecha: ${displayDate}`;
+                            document.getElementById("selectedDateSide").innerHTML = `${displayDateWithDay}`;
                             const sideList = document.getElementById("activitiesSideList");
                             if (!allActivities.length) {
                                 sideList.innerHTML = `<li class="empty-side">No hay actividades programadas para este día.</li>`;
@@ -692,7 +695,7 @@
                                 sideList.innerHTML = html;
                             }
                         } else {
-                            document.getElementById("modalDateTitle").innerHTML = `Fecha: ${displayDate}`;
+                            document.getElementById("modalDateTitle").innerHTML = `${displayDateWithDay}`;
                             const modalList = document.getElementById("modalActivitiesList");
                             if (!allActivities.length) {
                                 modalList.innerHTML = `<li class="empty-side" style="list-style:none;">No hay actividades.</li>`;
